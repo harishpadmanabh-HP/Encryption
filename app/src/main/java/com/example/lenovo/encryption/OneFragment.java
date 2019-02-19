@@ -4,6 +4,7 @@ package com.example.lenovo.encryption;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -56,17 +57,21 @@ import static android.content.ContentValues.TAG;
 
 @SuppressLint("ValidFragment")
 class OneFragment extends Fragment {
-    byte[] byteArray;ImageView imageView;
+    byte[] byteArray;ImageView imageView; ImageView enimg;
     Bitmap selectedImage,newbitmap;
+
+    ProgressDialog progressDialog;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         //returning our layout file
         //change R.layout.yourlayoutfilename for each of your fragments
         View view = inflater.inflate(R.layout.fragment_menu_1, container, false);
+        progressDialog=new ProgressDialog(getContext());
+        progressDialog.setTitle("ENCRYPTING");
         Button choose = (Button) view.findViewById(R.id.chooseencrypt);
         Button encrypt = (Button) view.findViewById(R.id.encryptbutton);
-        final ImageView enimg = (ImageView) view.findViewById(R.id.encryptimg);
+          enimg = (ImageView) view.findViewById(R.id.encryptimg);
         ImageView imageView;
          //Bitmap newbitmap;
 
@@ -79,6 +84,9 @@ class OneFragment extends Fragment {
       encrypt.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
+              ProgressDialog dialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
+
+//              progressDialog.show();
               newbitmap=selectedImage;
               convertimagetobyteonclick(newbitmap);
               KeyGenerator keyGenerator = null;
@@ -94,11 +102,13 @@ class OneFragment extends Fragment {
 
                   byte[] encrypted = encryptPdfFile(key, content);
                   System.out.println(encrypted);
-
+//progressDialog.dismiss();
+                  dialog.dismiss();
                   byte[] decrypted = decryptPdfFile(key, encrypted);
                   System.out.println(decrypted);
 
-                  saveFile(decrypted);
+                  saveFile(encrypted);
+                  Toast.makeText(getContext(), "File saved in file manasger", Toast.LENGTH_SHORT).show();
                   System.out.println("Done");
               } catch (NoSuchAlgorithmException e) {
                   e.printStackTrace();
@@ -162,22 +172,24 @@ class OneFragment extends Fragment {
         startActivityForResult(Intent.createChooser(galleryintent, "SELECT IMAGE"), 100);
     }
 
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
 
 
-        if (requestCode == 100) {
-            Uri selectedImageUri = data.getData();
+        if (resultCode == RESULT_OK) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream =getContext(). getContentResolver().openInputStream(imageUri);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+                byte[] newtest=      convertimagetobyteonclick(selectedImage);
+                enimg.setImageBitmap(selectedImage);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+            }
 
-            String tempPath = getPath(selectedImageUri, getActivity());
-            Bitmap selectedImage;
-            BitmapFactory.Options btmapOptions = new BitmapFactory.Options();
-            selectedImage = BitmapFactory.decodeFile(tempPath, btmapOptions);
-            ImageView enimg = getView().findViewById(R.id.encryptimg);
-
-            enimg.setImageBitmap(selectedImage);
-            //   uploadImagePath = tempPath;
-
+        }else {
+            Toast.makeText(getContext(), "You haven't picked Image",Toast.LENGTH_LONG).show();
         }
     }
 
