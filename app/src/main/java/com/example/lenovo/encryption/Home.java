@@ -14,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.TextView;
 
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -38,12 +39,20 @@ public class Home extends AppCompatActivity {
       //  getSupportActionBar().setDisplayHomeAsUpEnabled(true);
           getSupportActionBar().hide();
         viewPager = (ViewPager) findViewById(R.id.viewpager);
-        setupViewPager(viewPager);
+        try {
+            setupViewPager(viewPager);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
 
         tabLayout = (TabLayout) findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
         setupTabIcons();
     }
+
+
+
+
 
     private void setupTabIcons() {
 
@@ -60,7 +69,7 @@ public class Home extends AppCompatActivity {
 
     }
 
-    private void setupViewPager(ViewPager viewPager) {
+    private void setupViewPager(ViewPager viewPager) throws FileNotFoundException {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new OneFragment(), "ONE");
         adapter.addFrag(new TwoFragment(), "TWO");

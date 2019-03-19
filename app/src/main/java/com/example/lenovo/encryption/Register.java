@@ -1,5 +1,6 @@
 package com.example.lenovo.encryption;
 
+import android.app.AppComponentFactory;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -75,7 +76,7 @@ reg.setOnClickListener(new View.OnClickListener() {
                                 {
                                     conformpswd.setError("Please re-enter password");
                                 }
-                                else if(st_password!=st_conform)
+                                else if(!st_password.equals(st_conform))
                                 {
                                     conformpswd.setError("Passwords not matching");
                                 }

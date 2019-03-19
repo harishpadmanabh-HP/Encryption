@@ -1,11 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/encryptbutton"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="center
+">
 
+
+
+    <ImageView
+        android:id="@+id/decryptimg"
+        android:layout_width="227dp"
+        android:layout_height="226dp"
+        android:layout_marginTop="70dp"
+        android:background="@drawable/photobg"
+        android:src="@drawable/lock"
+         />
     <Button
         android:id="@+id/choosedecrypt"
         android:layout_width="match_parent"
@@ -16,21 +29,9 @@
         android:textColor="#fff"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/decryptimg"
-        android:layout_width="227dp"
-        android:layout_height="226dp"
-        android:layout_marginStart="76dp"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/photobg"
-        android:src="@drawable/lock"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/choosedecrypt" />
-
     <Button
         android:id="@+id/decryptbutton"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="148dp"
         android:layout_marginTop="19dp"
@@ -45,4 +46,4 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/decryptimg"
         app:layout_constraintVertical_bias="0.0" />
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

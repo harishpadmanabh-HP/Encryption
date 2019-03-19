@@ -81,9 +81,14 @@ class OneFragment extends Fragment {
                 selectImage();
             }
         });
+
       encrypt.setOnClickListener(new View.OnClickListener() {
           @Override
           public void onClick(View v) {
+
+//              if (v == null) {
+//                  Toast.makeText(getContext(),"Select an Image",Toast.LENGTH_SHORT).show();
+//              }
               ProgressDialog dialog = ProgressDialog.show(getActivity(), "Loading...", "Please wait...", true);
 
 //              progressDialog.show();
@@ -96,19 +101,31 @@ class OneFragment extends Fragment {
                   Key key = keyGenerator.generateKey();
                   System.out.println(key);
 
-                  byte[] content =         convertimagetobyteonclick(newbitmap);
+                  byte[] content =convertimagetobyteonclick(newbitmap);
 
                   System.out.println(content);
 
                   byte[] encrypted = encryptPdfFile(key, content);
                   System.out.println(encrypted);
+
 //progressDialog.dismiss();
                   dialog.dismiss();
+//                  Bitmap encryptedbm = BitmapFactory.decodeByteArray(encrypted, 0, encrypted.length);
+//                  enimg.setImageBitmap(encryptedbm);
+//
+//                  File rootDir=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Encrypted");
+//                  try (FileOutputStream out = new FileOutputStream(rootDir+"adarsh.png")) {
+//                      encryptedbm.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+//
+//                  } catch (IOException e) {
+//                      e.printStackTrace();
+//                  }
                   byte[] decrypted = decryptPdfFile(key, encrypted);
                   System.out.println(decrypted);
 
                   saveFile(encrypted);
-                  Toast.makeText(getContext(), "File saved in file manasger", Toast.LENGTH_SHORT).show();
+
+                  Toast.makeText(getContext(), "File saved in file manager", Toast.LENGTH_SHORT).show();
                   System.out.println("Done");
               } catch (NoSuchAlgorithmException e) {
                   e.printStackTrace();
@@ -157,7 +174,17 @@ class OneFragment extends Fragment {
 
     public static void saveFile(byte[] bytes) throws IOException {
 
-        FileOutputStream fos = new FileOutputStream("/sdcard/harishnew.jpg");
+        File rootDir=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Encrypted");
+        if (!rootDir.exists()){
+            rootDir.mkdir();
+        }
+        File encryDir=new File(rootDir,"Images");
+        if (!encryDir.exists()){
+            encryDir.mkdir();
+        }
+
+
+        FileOutputStream fos = new FileOutputStream(encryDir+"Encrypted_Image.jpg");
         fos.write(bytes);
         fos.close();
 
@@ -179,7 +206,7 @@ class OneFragment extends Fragment {
         if (resultCode == RESULT_OK) {
             try {
                 final Uri imageUri = data.getData();
-                final InputStream imageStream =getContext(). getContentResolver().openInputStream(imageUri);
+                final InputStream imageStream =getContext().getContentResolver().openInputStream(imageUri);
                 selectedImage = BitmapFactory.decodeStream(imageStream);
                 byte[] newtest=      convertimagetobyteonclick(selectedImage);
                 enimg.setImageBitmap(selectedImage);
@@ -205,6 +232,10 @@ class OneFragment extends Fragment {
     }
     private byte[] convertimagetobyteonclick(Bitmap newbitmap) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
+
+        if (newbitmap == null) {
+            Toast.makeText(getContext(), "select image", Toast.LENGTH_SHORT).show();
+        } else
         newbitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] imageInByte = baos.toByteArray();
         return imageInByte;
