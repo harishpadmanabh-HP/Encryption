@@ -55,7 +55,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 @SuppressLint("ValidFragment")
-class TwoFragment extends Fragment {
+public   class TwoFragment extends Fragment {
     byte[] byteArray;ImageView imageView; ImageView enimg;
     Bitmap selectedImage,newbitmap;
 
@@ -164,7 +164,7 @@ class TwoFragment extends Fragment {
         if (!rootDir.exists()){
             rootDir.mkdir();
         }
-        File encryDir=new File(rootDir,"Images");
+        File encryDir=new File(rootDir,"Imagestest");
         if (!encryDir.exists()){
             encryDir.mkdir();
         }

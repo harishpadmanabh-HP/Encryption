@@ -61,10 +61,10 @@ public class Home extends AppCompatActivity {
         tabOne.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_lock_outline_black_24dp, 0, 0);
         tabLayout.getTabAt(0).setCustomView(tabOne);
 
-        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
-        tabTwo.setText("DECRYPT");
-        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_lock_outline_black_24dp, 0, 0);
-        tabLayout.getTabAt(1).setCustomView(tabTwo);
+//        TextView tabTwo = (TextView) LayoutInflater.from(this).inflate(R.layout.custom_tab, null);
+//        tabTwo.setText("DECRYPT");
+//        tabTwo.setCompoundDrawablesWithIntrinsicBounds(0, R.drawable.ic_lock_outline_black_24dp, 0, 0);
+//        tabLayout.getTabAt(1).setCustomView(tabTwo);
 
 
     }
@@ -72,7 +72,7 @@ public class Home extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) throws FileNotFoundException {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new OneFragment(), "ONE");
-        adapter.addFrag(new TwoFragment(), "TWO");
+        //adapter.addFrag(new TwoFragment(), "TWO");
       viewPager.setAdapter(adapter);
     }
 
@@ -93,7 +93,8 @@ public class Home extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return mFragmentList.size();
+           // return mFragmentList.size();
+            return 1;
         }
 
         public void addFrag(Fragment fragment, String title) {

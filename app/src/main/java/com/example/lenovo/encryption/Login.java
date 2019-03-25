@@ -95,8 +95,8 @@ public class Login extends AppCompatActivity{
          forgetp.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View v) {
-                 Intent ik=new Intent(Login.this,Forget_password.class);
-                 startActivity(ik);
+             //    Intent ik=new Intent(Login.this,Forget_password.class);
+               //  startActivity(ik);
              }
          });
     }

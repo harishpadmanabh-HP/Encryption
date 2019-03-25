@@ -6,6 +6,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.ContentResolver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
@@ -56,7 +57,7 @@ import static android.app.Activity.RESULT_OK;
 import static android.content.ContentValues.TAG;
 
 @SuppressLint("ValidFragment")
-class OneFragment extends Fragment {
+public  class OneFragment extends Fragment {
     byte[] byteArray;ImageView imageView; ImageView enimg;
     Bitmap selectedImage,newbitmap;
 
@@ -123,7 +124,9 @@ class OneFragment extends Fragment {
                   byte[] decrypted = decryptPdfFile(key, encrypted);
                   System.out.println(decrypted);
 
-                  saveFile(encrypted);
+                  saveFile(encrypted );
+                  saveFileDecrypt(decrypted);
+              //    writeBytesToFile(encrypted);
 
                   Toast.makeText(getContext(), "File saved in file manager", Toast.LENGTH_SHORT).show();
                   System.out.println("Done");
@@ -184,7 +187,24 @@ class OneFragment extends Fragment {
         }
 
 
-        FileOutputStream fos = new FileOutputStream(encryDir+"Encrypted_Image.jpg");
+        FileOutputStream fos = new FileOutputStream(encryDir+"Encrypted.jpg");
+        fos.write(bytes);
+        fos.close();
+
+    }
+    public static void saveFileDecrypt(byte[] bytes) throws IOException {
+
+        File rootDir=new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Encrypted");
+        if (!rootDir.exists()){
+            rootDir.mkdir();
+        }
+        File encryDir=new File(rootDir,"Images");
+        if (!encryDir.exists()){
+            encryDir.mkdir();
+        }
+
+
+        FileOutputStream fos = new FileOutputStream(encryDir+"Decrypt.jpg");
         fos.write(bytes);
         fos.close();
 
@@ -240,6 +260,38 @@ class OneFragment extends Fragment {
         byte[] imageInByte = baos.toByteArray();
         return imageInByte;
 
+
+    }
+
+    private static void writeBytesToFile(byte[] bFile ) throws IOException {
+
+
+//        String fileDest="/Internal Storage/testingbyte";
+//        try (FileOutputStream fileOuputStream = new FileOutputStream(fileDest)) {
+//            fileOuputStream.write(bFile);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+        String file_path = Environment.getExternalStorageDirectory().getAbsolutePath() +
+                "/PrintFiles";
+        File file = new File(file_path+"/test.txt");
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+
+        FileOutputStream fos = null;
+        //fos = openFileOutput(file.getName(), Context.MODE_PRIVATE);
+
+        // byte[] b = {65,66,67,68,69};
+        fos.write(bFile);
+        fos.flush();
+        fos.close();
 
     }
 
